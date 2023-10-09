@@ -7,10 +7,11 @@
  */
 export default function penaltyPoints(password = "") {
   // The following line ensures, that password is always a string, like the number 128 -> string "128"
+  if(!password) return 0
   if (typeof password !== "string") password = String(password);
-
-  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-  // * * * INSERT YOUR CODE HERE * * * * * * * * * * * * * *
-  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-  //
+  const multipleChars = password.match(/(\w)\1+/g)
+  if(!multipleChars) return 0
+  if(multipleChars.length === 0) return 0
+  const pointsArray = multipleChars.map( chars => chars.length > 2 ? 2 : 1 )
+  return pointsArray.reduce( (sum,curr) => sum+=curr)
 }
