@@ -6,7 +6,5 @@
 
 // FUNCTION 3
 export default function findLargestNumber(numbers) {
-  numbers.sort((a,b)=> b-a)
-  let largest = numbers[0]
-  return largest;
+  return Math.max(...numbers);
 }
