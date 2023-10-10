@@ -20,6 +20,12 @@ export default function isValidPassword(password = "") {
    *   return ...;
    * }
    */
+  let regex = /^(?=.*[A-Za-z])(?=.*\d).{0,1}\w{9}$/
+  const numbersInString = password.match(/\d+/)
+  if(numbersInString && (numbersInString.length === 1 && JSON.stringify(numbersInString[0].split('')) === JSON.stringify(numbersInString[0].split('').sort()) || JSON.stringify(numbersInString[0].split('')) === JSON.stringify(numbersInString[0].split('').sort().reverse()))) return false
+  if(!regex.test(password) || forbiddenPasswords.includes(password)) return false
+  regex = /^(?=.*[A-Z])(?=.*[a-z]).+/
+  if(!regex.test(password)) return false
   const setOfPassword = new Set([...password]);
   if (setOfPassword.size < 4) return false;
   return true;
