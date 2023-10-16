@@ -10,23 +10,35 @@ export default function isValidPassword(password = "") {
   // The following line ensures, that password is always a string, like the number 128 -> string "128"
   if (typeof password !== "string") password = String(password);
 
-  // * * * YOUR CODE GOES IN HERE ... * * *
-  /*
-   * if (password is not exactly 10 digits or characters...) {
-   *   return ...;
-   * }
-   *
-   * if (is not composed by digits and numbers) {
-   *   return ...;
-   * }
-   */
-  let regex = /^(?=.*[A-Za-z])(?=.*\d).{0,1}\w{9}$/
-  const numbersInString = password.match(/\d+/)
-  if(numbersInString && (numbersInString.length === 1 && JSON.stringify(numbersInString[0].split('')) === JSON.stringify(numbersInString[0].split('').sort()) || JSON.stringify(numbersInString[0].split('')) === JSON.stringify(numbersInString[0].split('').sort().reverse()))) return false
-  if(!regex.test(password) || forbiddenPasswords.includes(password)) return false
-  regex = /^(?=.*[A-Z])(?=.*[a-z]).+/
-  if(!regex.test(password)) return false
+  if(password.length !== 10) return false
+
+  // If password doesn't include characters and numbers or includes any special character return false 
+  if (!/^(?=.*[A-Za-z])(?=.*\d).{0,1}\w{9}$/.test(password)) return false
+
+  // If a password only include uppercase or lowercase should return false
+  if (!/^(?=.*[A-Z])(?=.*[a-z]).+/.test(password)) return false
+
+  // If a password is in the forbidden passwords we should return false too
+  if(forbiddenPasswords.includes(password)) return false
+
+  // A password with directly ascending or descending order should return false too
+  if(isAscendingOrDescending(password)) return false
+
   const setOfPassword = new Set([...password]);
   if (setOfPassword.size < 4) return false;
   return true;
+}
+
+function isAscendingOrDescending(string){
+  const numbersInString = string.match(/\d+/g)
+  
+  // Return false if there is no block of numbers with more than three digits
+  if(numbersInString.filter( number => number.length > 2).length === 0) return false
+
+  // Return whether or not there is a block of number in string that is ascending or descending
+  return numbersInString.some( numberInString => {
+    if (new Set(numberInString).size === 1) return false
+    if (JSON.stringify(numberInString.split('').sort()) === JSON.stringify(numberInString.split('')) ||
+        JSON.stringify(numberInString.split('').sort().reverse()) === JSON.stringify(numberInString.split(''))) return true
+  })
 }
