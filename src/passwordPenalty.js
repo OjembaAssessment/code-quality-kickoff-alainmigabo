@@ -6,11 +6,16 @@
  * @returns {number}
  */
 export default function penaltyPoints(password = "") {
+  // Return 0 if we don't have a password 
   if(!password) return 0
+
   if (typeof password !== "string") password = String(password);
+
+  // Get all substrings made by more than one same character
   const multipleChars = password.match(/(\w)\1+/g)
+
+  // Return 0 if there is no repeating characters
   if(!multipleChars) return 0
-  if(multipleChars.length === 0) return 0
-  const pointsArray = multipleChars.map( chars => chars.length > 2 ? 2 : 1 )
-  return pointsArray.reduce( (sum,curr) => sum+=curr)
+
+  return multipleChars.map( chars => chars.length > 2 ? 2 : 1 ).reduce( (sum,curr) => sum+=curr)
 }
