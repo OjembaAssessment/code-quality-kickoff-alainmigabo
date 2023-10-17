@@ -6,8 +6,5 @@
 
 // FUNCTION 1
 export default function countRbt(ls) {
-  const arrayOfCharacters = ls.split('')
-  const arrayOfRs = arrayOfCharacters.filter(character => character == 'R')
-  const numberOfRs = arrayOfRs.length
-  return numberOfRs
+  return ls.split('').filter(character => character == 'R').length
 }
